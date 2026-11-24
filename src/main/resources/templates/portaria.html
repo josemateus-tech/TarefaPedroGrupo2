@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Portaria</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: menu}"></div><main class="conteudo"><h1>Controle da Portaria</h1><p class="subtitulo">Registre a saída e o retorno dos alunos autorizados.</p>
+<div class="tabela-wrap"><table><thead><tr><th>Aluno</th><th>Motivo</th><th>Status</th><th>Porteiro</th><th>Operação</th></tr></thead><tbody>
+<tr th:each="l : ${liberacoes}"><td th:text="${l.aluno.nome}"></td><td th:text="${l.motivo}"></td><td th:text="${l.status}"></td><td>
+<form th:if="${l.status.name() == 'APROVADA'}" th:action="@{/portaria/{id}/saida(id=${l.id})}" method="post"><select name="porteiroId" required><option value="">Porteiro</option><option th:each="p : ${porteiros}" th:value="${p.id}" th:text="${p.nome}"></option></select><button class="aprovar pequeno">Registrar saída</button></form>
+<span th:if="${l.status.name() != 'APROVADA'}">—</span></td><td><form th:if="${l.status.name() == 'UTILIZADA'}" th:action="@{/portaria/{id}/retorno(id=${l.id})}" method="post"><button class="pequeno">Registrar retorno</button></form><span th:if="${l.status.name() != 'UTILIZADA'}">—</span></td></tr>
+<tr th:if="${#lists.isEmpty(liberacoes)}"><td colspan="5" class="vazio">Nenhuma liberação cadastrada.</td></tr></tbody></table></div>
+<h2>Registros realizados</h2><div class="tabela-wrap"><table><thead><tr><th>Aluno</th><th>Porteiro</th><th>Saída real</th><th>Retorno real</th></tr></thead><tbody><tr th:each="r : ${registros}"><td th:text="${r.liberacao.aluno.nome}"></td><td th:text="${r.porteiro.nome}"></td><td th:text="${r.saidaReal != null ? #temporals.format(r.saidaReal,'dd/MM/yyyy HH:mm') : '-'}"></td><td th:text="${r.retornoReal != null ? #temporals.format(r.retornoReal,'dd/MM/yyyy HH:mm') : 'Aguardando'}"></td></tr><tr th:if="${#lists.isEmpty(registros)}"><td colspan="4" class="vazio">Nenhum registro de portaria.</td></tr></tbody></table></div></main></body></html>

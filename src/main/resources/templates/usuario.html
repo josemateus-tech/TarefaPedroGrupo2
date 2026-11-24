@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Usuários - IF Sistema</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: menu}"></div><main class="conteudo"><h1>Gerenciamento de Usuários</h1>
+<form class="formulario" th:action="@{/usuarios}" th:object="${usuario}" method="post"><input type="hidden" th:field="*{id}">
+<h2>Cadastrar usuário</h2><div class="grid-form">
+<div><label>Nome</label><input th:field="*{nome}" required></div>
+<div><label>E-mail</label><input type="email" th:field="*{email}" required></div>
+<div><label>Tipo</label><select th:field="*{tipo}" required><option value="">Selecione</option><option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"></option></select></div>
+<div><label>Matrícula (aluno)</label><input th:field="*{matricula}"></div>
+<div><label>SIAPE (professor)</label><input th:field="*{siape}"></div>
+<div><label>Turma (aluno)</label><select th:field="*{turma.id}"><option value="">Sem turma</option><option th:each="t : ${turmas}" th:value="${t.id}" th:text="${t.nome}"></option></select></div>
+</div><button type="submit">Cadastrar usuário</button></form>
+<h2>Usuários cadastrados</h2><div class="tabela-wrap"><table><thead><tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Tipo</th><th>Turma</th><th>Ações</th></tr></thead><tbody>
+<tr th:each="u : ${usuarios}"><td th:text="${u.id}"></td><td th:text="${u.nome}"></td><td th:text="${u.email}"></td><td th:text="${u.tipo}"></td><td th:text="${u.turma != null ? u.turma.nome : '-'}"></td><td class="acoes"><a class="link-editar" th:href="@{/usuarios/{id}/editar(id=${u.id})}">Editar</a><form th:action="@{/usuarios/{id}/excluir(id=${u.id})}" method="post" onsubmit="return confirm('Excluir este usuário?')"><button class="recusar pequeno" type="submit">Excluir</button></form></td></tr>
+<tr th:if="${#lists.isEmpty(usuarios)}"><td colspan="6" class="vazio">Nenhum usuário cadastrado.</td></tr></tbody></table></div>
+</main></body></html>

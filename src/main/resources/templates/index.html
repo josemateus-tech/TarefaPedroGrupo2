@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Painel Administrativo - IF</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: menu}"></div><main class="conteudo">
+<header class="topo"><div><h1>Painel Administrativo</h1><p class="subtitulo">Visão geral do Sistema de Liberação de Alunos</p></div><span class="usuario-logado">IF Sistema</span></header>
+<section class="cards">
+<div class="card"><h3>Usuários cadastrados</h3><p th:text="${totalUsuarios}">0</p></div>
+<div class="card"><h3>Alunos</h3><p th:text="${totalAlunos}">0</p></div>
+<div class="card"><h3>Solicitações pendentes</h3><p th:text="${pendentes}">0</p></div>
+<div class="card"><h3>Liberações aprovadas</h3><p th:text="${aprovadas}">0</p></div>
+</section>
+<h2>Últimas solicitações</h2>
+<div class="tabela-wrap"><table><thead><tr><th>Aluno</th><th>Professor</th><th>Saída prevista</th><th>Motivo</th><th>Status</th></tr></thead>
+<tbody><tr th:each="l : ${ultimas}"><td th:text="${l.aluno.nome}"></td><td th:text="${l.professor.nome}"></td><td th:text="${#temporals.format(l.saidaPrevista,'dd/MM/yyyy HH:mm')}"></td><td th:text="${l.motivo}"></td><td><span class="status" th:classappend="${#strings.toLowerCase(l.status)}" th:text="${l.status}"></span></td></tr>
+<tr th:if="${#lists.isEmpty(ultimas)}"><td colspan="5" class="vazio">Nenhuma solicitação cadastrada.</td></tr></tbody></table></div>
+</main></body></html>

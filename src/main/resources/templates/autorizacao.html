@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Autorizações</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: menu}"></div><main class="conteudo"><h1>Autorizações de Liberação</h1><p class="subtitulo">Solicitações aguardando análise do professor.</p>
+<div class="tabela-wrap"><table><thead><tr><th>Aluno</th><th>Professor</th><th>Motivo</th><th>Saída prevista</th><th>Status</th><th>Ação</th></tr></thead><tbody>
+<tr th:each="l : ${liberacoes}"><td th:text="${l.aluno.nome}"></td><td th:text="${l.professor.nome}"></td><td th:text="${l.motivo}"></td><td th:text="${#temporals.format(l.saidaPrevista,'dd/MM/yyyy HH:mm')}"></td><td><span class="status pendente">PENDENTE</span></td><td class="acoes"><form th:action="@{/liberacoes/{id}/aprovar(id=${l.id})}" method="post"><button class="aprovar pequeno">Aprovar</button></form><form th:action="@{/liberacoes/{id}/recusar(id=${l.id})}" method="post"><button class="recusar pequeno">Recusar</button></form></td></tr>
+<tr th:if="${#lists.isEmpty(liberacoes)}"><td colspan="6" class="vazio">Não existem solicitações pendentes.</td></tr></tbody></table></div></main></body></html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Solicitar liberação</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: menu}"></div><main class="conteudo"><h1>Solicitar Liberação</h1>
+<form class="formulario" th:action="@{/liberacoes}" th:object="${liberacao}" method="post">
+<label>Aluno</label><select th:field="*{aluno.id}" required><option value="">Selecione o aluno</option><option th:each="a : ${alunos}" th:value="${a.id}" th:text="${a.nome}"></option></select>
+<label>Professor responsável</label><select th:field="*{professor.id}" required><option value="">Selecione o professor</option><option th:each="p : ${professores}" th:value="${p.id}" th:text="${p.nome}"></option></select>
+<label>Data e hora da saída</label><input type="datetime-local" th:field="*{saidaPrevista}" required>
+<label>Data e hora previstas para retorno</label><input type="datetime-local" th:field="*{retornoPrevisto}">
+<label>Motivo</label><textarea th:field="*{motivo}" required maxlength="1000" placeholder="Descreva o motivo da liberação"></textarea>
+<button type="submit">Enviar solicitação</button></form>
+<h2>Solicitações realizadas</h2><div class="tabela-wrap"><table><thead><tr><th>Aluno</th><th>Saída prevista</th><th>Motivo</th><th>Status</th></tr></thead><tbody><tr th:each="l : ${liberacoes}"><td th:text="${l.aluno.nome}"></td><td th:text="${#temporals.format(l.saidaPrevista,'dd/MM/yyyy HH:mm')}"></td><td th:text="${l.motivo}"></td><td th:text="${l.status}"></td></tr><tr th:if="${#lists.isEmpty(liberacoes)}"><td colspan="4" class="vazio">Nenhuma solicitação cadastrada.</td></tr></tbody></table></div>
+</main></body></html>

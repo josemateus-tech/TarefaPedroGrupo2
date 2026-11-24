@@ -1,0 +1,6 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Turmas - IF Sistema</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div th:replace="~{fragments :: menu}"></div><main class="conteudo"><h1>Gerenciamento de Turmas</h1>
+<form class="formulario" th:action="@{/turmas}" th:object="${turma}" method="post"><label>Nome da turma</label><input th:field="*{nome}" placeholder="Ex.: Informática 2A" required><label>Curso</label><input th:field="*{curso}" required><label>Período</label><input th:field="*{periodo}" placeholder="Ex.: 2026.1"><button type="submit">Cadastrar turma</button></form>
+<h2>Turmas cadastradas</h2><div class="tabela-wrap"><table><thead><tr><th>ID</th><th>Turma</th><th>Curso</th><th>Período</th></tr></thead><tbody><tr th:each="t : ${turmas}"><td th:text="${t.id}"></td><td th:text="${t.nome}"></td><td th:text="${t.curso}"></td><td th:text="${t.periodo}"></td></tr><tr th:if="${#lists.isEmpty(turmas)}"><td colspan="4" class="vazio">Nenhuma turma cadastrada.</td></tr></tbody></table></div></main></body></html>
